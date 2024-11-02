@@ -11,6 +11,11 @@ class GC {
 public:
     vector<Object*> objects;
     unordered_set<Object*> roots;
+    ~GC() {
+      for(auto& obj : objects) {
+        delete obj;
+      }
+    }
 
     void addRoot(Object* obj) {
         roots.insert(obj);
@@ -86,6 +91,7 @@ void GC::collect() {
         if (!obj -> marked) {
             cout << "Freed : ";
             obj->print();
+            delete obj;
             cout << endl;
             // delete
             it = objects.erase(it);
